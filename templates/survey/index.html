@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Survey page{% endblock title %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>আপনার কেমন লাগছে বলুন!</h1>
+                    <p>আপনার উত্তরগুলি বেনামে সংগ্রহ করা হয়েছে, এবং স্বাস্থ্যসেবা সরবরাহকারীদের COVID-19 এর প্রসারণের गेজ করতে সহায়তা করার জন্য একত্রিত করা হবে নীচের প্রশ্নপত্রটি COVID-19 সংক্রমণের জন্য আপনার ঝুঁকির কারণগুলি নির্ধারণে সহায়তা করার জন্য ডিজাইন করা হয়েছে। সম্পূর্ণ প্রশ্নাবলী স্বাস্থ্যসেবা সিস্টেমগুলি অবহিত করতে ব্যবহৃত হবে। নিজেকে, আপনার পরিবার এবং আপনার সম্প্রদায়কে কীভাবে সুস্থ রাখতে হবে সে সম্পর্কেও এই ওয়েবসাইটটির গাইডেন্স রয়েছে। প্রশ্নগুলি বাংলাদেশি জনস্বাস্থ্য সংস্থাগুলি এবং অন্যান্য স্টেকহোল্ডারদের সর্বোত্তম উপলভ্য নির্দেশিকার উপর ভিত্তি করে এবং নিয়মিত আপডেট করা হবে। অনলাইনে এই সমীক্ষা চালিয়ে আপনি COVID রোগ নির্ণয় করতে পারবেন না। যদি আপনি মারাত্মক লক্ষণগুলি অনুভব করছেন তবে চিকিত্সার সহায়তা নিন।</p>
+                    <h5>আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {{ form.source.errors }}
+                        {{ form.source }}
+
+                        <table class="table table-header-rotated">
+                            <thead>
+                            <tr>
+                                <!-- First column header is not rotated -->
+                                <th></th>
+                                <!-- Following headers are rotated -->
+                                <th class="rotate checkbox-width">Yes</th>
+                                <th class="rotate checkbox-width">No</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for field in form.visible_fields|slice:":-1" %}
+                                <tr>
+                                    <th class="row-header">{{ field.label }}</th>
+                                    {% for radio in field %}
+                                        <td class="checkbox-width">
+                                            {{ radio.tag }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <th class="row-header">{{ form.postcode.label }}</th>
+                                <td class="checkbox-width">
+                                    {{ form.postcode }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input type="submit" value="OK">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
+

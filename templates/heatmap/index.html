@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Survey page{% endblock title %}
+{% block extracss %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+{% endblock extracss %}
+
+{% block extrajs %}
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <script src="{% static 'leaflet-heat.js' %}"></script>
+    <script>
+        // The OSM map
+        var map = L.map('leafletmap').setView([23.727492, 90.389425], 8);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        points = [];
+        $.getJSON("{% static 'postcodes.json' %}", function (json) {
+            for(i=0; i<100; i++) {
+                var index = Math.floor(Math.random()*Math.floor(json.length))
+                points.push([json[index].lat, json[index].lon, 0.5]);
+            }
+            {#$.each(json, function (k, v) {#}
+            {#    points.push([v.lat, v.lon, 0.9]);#}
+            {# });#}
+            console.log(points);
+            var heat = L.heatLayer(
+                points, {
+                    radius: 20,
+                    minOpacity: 0.5
+                }).addTo(map);
+        });
+
+    </script>
+{% endblock extrajs %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <p>
+                    সমস্ত ফলাফল বিকশিত ডেটার উপর ভিত্তি করে প্রাথমিক মডেলগুলি থেকে। মডেলগুলি পরীক্ষা এবং আরও বিকাশ অব্যাহত রাখবে এবং ফলাফলগুলি চূড়ান্ত বা পিয়ার-পর্যালোচনা হিসাবে বিবেচনা করা উচিত নয়। সমস্ত অনুসন্ধান সতর্কতার সাথে ব্যাখ্যা করা উচিত।
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="leafletmap" style="height: 600px"></div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
