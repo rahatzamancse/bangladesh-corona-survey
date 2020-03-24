@@ -1,1 +1,1 @@
-web: gunicorn portfolio.wsgi  --log-file -
+web: gunicorn bangla_corona.wsgi  --log-file -
