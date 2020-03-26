@@ -24,14 +24,15 @@
         }).addTo(map);
 
         points = [];
-        $.getJSON("{% static 'postcodes.json' %}", function (json) {
-            for(i=0; i<100; i++) {
-                var index = Math.floor(Math.random()*Math.floor(json.length))
-                points.push([json[index].lat, json[index].lon, 0.5]);
-            }
-            {#$.each(json, function (k, v) {#}
-            {#    points.push([v.lat, v.lon, 0.9]);#}
-            {# });#}
+        $.getJSON("{% url 'data_json' %}", function (json) {
+            $.each(json, function (k, v) {
+                if(v.infected === 'SV') {
+                    points.push([v.lat, v.lon, 0.9]);
+                }
+                else if(v.infected === 'MD') {
+                    points.push([v.lat, v.lon, 0.5]);
+                }
+            });
             console.log(points);
             var heat = L.heatLayer(
                 points, {

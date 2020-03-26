@@ -1,1 +1,2 @@
-web: gunicorn bangla_corona.wsgi  --log-file -
+release: python manage.py migrate
+web: gunicorn corona_bangla.wsgi  --log-file -

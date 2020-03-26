@@ -1,60 +1,111 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Survey page{% endblock title %}
 
+{% block extracss %}
+
+    <style>
+        input#id_postcode::-webkit-outer-spin-button,
+        input#id_postcode::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+
+        input#id_postcode[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+    </style>
+
+{% endblock extracss %}
+
+{% block extrajs %}
+    <script src="{% static 'dist.js' %}"></script>
+    <script>
+        const postcodejson = '{% static 'postcodes.json' %}';
+    </script>
+    <script src="{% static 'form.js' %}"></script>
+
+    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+    <script>
+    </script>
+{% endblock extrajs %}
+
 {% block content %}
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>আপনার কেমন লাগছে বলুন!</h1>
-                    <p>আপনার উত্তরগুলি বেনামে সংগ্রহ করা হয়েছে, এবং স্বাস্থ্যসেবা সরবরাহকারীদের COVID-19 এর প্রসারণের गेজ করতে সহায়তা করার জন্য একত্রিত করা হবে নীচের প্রশ্নপত্রটি COVID-19 সংক্রমণের জন্য আপনার ঝুঁকির কারণগুলি নির্ধারণে সহায়তা করার জন্য ডিজাইন করা হয়েছে। সম্পূর্ণ প্রশ্নাবলী স্বাস্থ্যসেবা সিস্টেমগুলি অবহিত করতে ব্যবহৃত হবে। নিজেকে, আপনার পরিবার এবং আপনার সম্প্রদায়কে কীভাবে সুস্থ রাখতে হবে সে সম্পর্কেও এই ওয়েবসাইটটির গাইডেন্স রয়েছে। প্রশ্নগুলি বাংলাদেশি জনস্বাস্থ্য সংস্থাগুলি এবং অন্যান্য স্টেকহোল্ডারদের সর্বোত্তম উপলভ্য নির্দেশিকার উপর ভিত্তি করে এবং নিয়মিত আপডেট করা হবে। অনলাইনে এই সমীক্ষা চালিয়ে আপনি COVID রোগ নির্ণয় করতে পারবেন না। যদি আপনি মারাত্মক লক্ষণগুলি অনুভব করছেন তবে চিকিত্সার সহায়তা নিন।</p>
-                    <h5>আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন</h5>
-                </div>
+    <section class="container mt-md-5 pt-md-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>আপনার কেমন লাগছে বলুন!</h1>
+                <p>আপনার উত্তরগুলি বেনামে সংগ্রহ করা হয়েছে, এবং স্বাস্থ্যসেবা সরবরাহকারীদের COVID-19 এর প্রসারণের गेজ করতে সহায়তা করার জন্য একত্রিত করা হবে নীচের প্রশ্নপত্রটি COVID-19 সংক্রমণের জন্য আপনার ঝুঁকির কারণগুলি নির্ধারণে সহায়তা করার জন্য ডিজাইন করা হয়েছে। সম্পূর্ণ প্রশ্নাবলী স্বাস্থ্যসেবা সিস্টেমগুলি অবহিত করতে ব্যবহৃত হবে। নিজেকে, আপনার পরিবার এবং আপনার সম্প্রদায়কে কীভাবে সুস্থ রাখতে হবে সে সম্পর্কেও এই ওয়েবসাইটটির গাইডেন্স রয়েছে। প্রশ্নগুলি বাংলাদেশি জনস্বাস্থ্য সংস্থাগুলি এবং অন্যান্য স্টেকহোল্ডারদের সর্বোত্তম উপলভ্য নির্দেশিকার উপর ভিত্তি করে এবং নিয়মিত আপডেট করা হবে। অনলাইনে এই সমীক্ষা চালিয়ে আপনি COVID রোগ নির্ণয় করতে পারবেন না। যদি আপনি মারাত্মক লক্ষণগুলি অনুভব করছেন তবে চিকিত্সার সহায়তা নিন।</p>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {{ form.non_field_errors }}
-                        {{ form.source.errors }}
-                        {{ form.source }}
-
-                        <table class="table table-header-rotated">
-                            <thead>
-                            <tr>
-                                <!-- First column header is not rotated -->
-                                <th></th>
-                                <!-- Following headers are rotated -->
-                                <th class="rotate checkbox-width">Yes</th>
-                                <th class="rotate checkbox-width">No</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            {% for field in form.visible_fields|slice:":-1" %}
-                                <tr>
-                                    <th class="row-header">{{ field.label }}</th>
-                                    {% for radio in field %}
-                                        <td class="checkbox-width">
-                                            {{ radio.tag }}
-                                        </td>
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                            <tr>
-                                <th class="row-header">{{ form.postcode.label }}</th>
-                                <td class="checkbox-width">
-                                    {{ form.postcode }}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <input type="submit" value="OK">
-                    </form>
-                </div>
+            <div class="col-md-2 align-self-center text-center">
+                <img src="{% static 'home_logo.png' %}" alt="Logo Image" style="width: 100px; height: 100px;">
             </div>
         </div>
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-8">
+                <h5>আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন</h5>
+            </div>
+        </div>
+        <form id="formsubmit" action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.source.errors }}
+            {{ form.source }}
+            <div class="row d-none d-md-flex text-center mt-5 justify-content-center">
+                <div class="col-md-6">
+                    <h2>প্রশ্ন</h2>
+                </div>
+                <div class="col-md-1">
+                    <h2>হ্যাঁ</h2>
+                </div>
+                <div class="col-md-1">
+                    <h2>না</h2>
+                </div>
+            </div>
+            <hr>
+            {% for field in form.visible_fields|slice:":7" %}
+                <div class="row text-center justify-content-center">
+                    <div class="col-12 col-md-6 pb-1">
+                        {{ field.label }}
+                    </div>
+                    <div class="col-6 text-right col-md-1 text-md-center">
+                        <label class="d-inline d-md-none lead p-2">হ্যা</label>
+                        {{ field.0.tag }}
+                    </div>
+                    <div class="col-6 text-left col-md-1 text-md-center">
+                        <label class="d-inline d-md-none lead p-2">না</label>
+                        {{ field.1.tag }}
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+
+            <div class="row text-center justify-content-center mb-5">
+                <div class="col-12 col-md-8">
+                    <button type="button" id="btnLocation" class="btn btn-primary btn-lg">জিপিএস এর মাধ্যমে আপনার স্থান জানুন।</button><br>
+                    <span id="address">এই বাটন এর মাধ্যমে নিচের তত্থগুলো সয়ংক্রিয়ভাবে পূরণ হয়ে যাবে। </span>
+                </div>
+            </div>
+            <div class="row text-center justify-content-center">
+                <div class="col-12 col-md-6 pb-2">
+                    {{ form.postcode.label }}
+                </div>
+                <div class="col-12 text-center col-md-2">
+                    {{ form.postcode }}
+                    {{ form.lon.as_hidden }}
+                    {{ form.lat.as_hidden }}
+                </div>
+            </div>
+            <input type="hidden" name="g-recaptcha-response" id='recaptcha'>
+            <div class="row text-center justify-content-center mt-5">
+                <div class="col-12 text-right col-md-6 text-md-center">
+                    <input type="submit" value="SUBMIT" class="btn btn-primary btn-lg">
+                </div>
+            </div>
+            <hr>
+        </form>
     </section>
 
 {% endblock content %}

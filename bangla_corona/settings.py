@@ -12,22 +12,22 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import django_heroku
 import os
+import socket
+
+if socket.gethostname() == "insane-PC":
+    from bangla_corona.local_settings import *
+else:
+    from bangla_corona.production_settings import *
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '206)sks5jpkv!x+&!#336b=2=o79*4hcgk(5t5$o6$dz)i4)=y'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -73,7 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bangla_corona.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -83,7 +82,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -103,7 +101,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -117,7 +114,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -129,6 +125,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+RECAPTCHA_SITE_KEY = "6LeJ0uMUAAAAAEHAH_WsqbJRk2sWe2Av75VYo4gX"
+RECAPTCHA_SECRET_KEY = "6LeJ0uMUAAAAAG5jrBpOvZ4C05JoHhJY0IQTwHzk"
+
+
 # Activate Django-Heroku.
 django_heroku.settings(locals())
-
