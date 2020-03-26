@@ -28,7 +28,7 @@ def index(request):
             new_survey.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('heatmap')
+            return HttpResponseRedirect('/heatmap')
         else:
             # TODO: Show error message
             return HttpResponseRedirect('')

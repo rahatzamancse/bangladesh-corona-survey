@@ -99,17 +99,17 @@ $.getJSON(postcodejson, function (json) {
 
 grecaptcha.ready(function() {
     $('#formsubmit').submit(function (e) {
-        var form = this;
         e.preventDefault();
-        grecaptcha.execute(site_key, {action: 'survey'}).then(function(token) {
-            $('#recaptcha').val(token);
-            if(post_code_correct) {
-                form.submit()
-            }
-            else {
-                // TODO: Trigger error here
-            }
-        });
+        var form = this;
+        if(post_code_correct) {
+            grecaptcha.execute(site_key, {action: 'survey'}).then(function(token) {
+                $('#recaptcha').val(token);
+                form.submit();
+            });
+        }
+        else {
+            $('#address').html('<b style="color: red">পোস্ট কোডটি সঠিক নয়।</b>');
+        }
     });
 });
 
