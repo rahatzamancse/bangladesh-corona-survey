@@ -28,8 +28,9 @@ def index(request):
             new_survey.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('')
+            return HttpResponseRedirect('heatmap')
         else:
+            # TODO: Show error message
             return HttpResponseRedirect('')
 
     # if a GET (or any other method) we'll create a blank form

@@ -45,7 +45,7 @@ $.getJSON(postcodejson, function (json) {
         if ("geolocation" in navigator){
             navigator.geolocation.getCurrentPosition(show_location, show_error, {timeout:1000, enableHighAccuracy: true}); //position request
         } else {
-            console.log("Browser doesn't support geolocation!");
+            $('#address').html('আপনার ব্রাউসার সাপোর্ট করে না।');
         }
     });
 
@@ -77,23 +77,23 @@ $.getJSON(postcodejson, function (json) {
     //Error Callback
     function show_error(error){
         console.log(error.code);
+        const addtext = $('#address');
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                alert("Permission denied by user.");
+                addtext.html('অনুমতি পাওয়া যায় নি।');
                 break;
             case error.POSITION_UNAVAILABLE:
-                alert("Location position unavailable.");
+                addtext.html('জিপিএস কাজ করছে না।');
                 break;
             case error.TIMEOUT:
-                alert("Request timeout.");
+                addtext.html('ইন্টারনেট অনেক ধীর।');
                 break;
             case error.UNKNOWN_ERROR:
-                alert("Unknown error.");
+                addtext.html('জিপিএস কাজ করছে না।');
                 break;
         }
         // var pos = {lat: 23.7, lon: 90.95};
         btnLocation.html('দুঃখিত, স্থান জানা যাচ্ছে না।');
-        $('#address').html('দয়া করে ম্যানুয়ালি ইনপুট দেন।');
     }
 });
 
@@ -101,7 +101,7 @@ grecaptcha.ready(function() {
     $('#formsubmit').submit(function (e) {
         var form = this;
         e.preventDefault();
-        grecaptcha.execute('{{ site_key }}', {action: 'survey'}).then(function(token) {
+        grecaptcha.execute(site_key, {action: 'survey'}).then(function(token) {
             $('#recaptcha').val(token);
             if(post_code_correct) {
                 form.submit()
