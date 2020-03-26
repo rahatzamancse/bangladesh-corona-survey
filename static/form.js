@@ -42,8 +42,9 @@ $.getJSON(postcodejson, function (json) {
             .html(
                 '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>\n' + '  Loading...'
             );
+        postcodefield.val('');
         if ("geolocation" in navigator){
-            navigator.geolocation.getCurrentPosition(show_location, show_error, {timeout:1000, enableHighAccuracy: true}); //position request
+            navigator.geolocation.getCurrentPosition(show_location, show_error, {timeout:10000, enableHighAccuracy: true}); //position request
         } else {
             $('#address').html('আপনার ব্রাউসার সাপোর্ট করে না।');
         }
@@ -70,9 +71,17 @@ $.getJSON(postcodejson, function (json) {
         gps_accessed = true;
         var pos = {lat: position.coords.latitude, lon: position.coords.longitude};
         res = getclosestpostlocation(json, pos);
-        postcodefield.val(res.location.p);
+        if(res.dist < 1200) {
+            post_code_correct = true;
+            postcodefield.val(res.location.p);
+            filllatlon(res.location.lat, res.location.lon);
+            $('#address').html(res.location.s + ', ' + res.location.t + ', ' + res.location.dis + ', ' + res.location.div + 'বিভাগ, ' + res.location.p);
+        }
+        else {
+            post_code_correct = false;
+            $('#address').html('<b style="color: red">আপনি দেশের বাইরে অবস্থিত।</b>');
+        }
         btnLocation.prop('disabled', false).html('আবার স্থান দেখুন।');
-        filllatlon(res.location.lat, res.location.lon);
     }
     //Error Callback
     function show_error(error){

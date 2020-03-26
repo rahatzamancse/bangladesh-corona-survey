@@ -15,15 +15,17 @@ def index(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = SurveyForm(request.POST)
-        # RECAPTCHA v3 validation
-        captcha_result = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
-            'response': request.POST.get('g-recaptcha-response'),
-            'secret': settings.RECAPTCHA_SECRET_KEY
-        }).json()
         # check whether it's valid:
         if form.is_valid():
+            # RECAPTCHA v3 validation
+            captcha_result = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
+                'response': request.POST.get('g-recaptcha-response'),
+                'secret': settings.RECAPTCHA_SECRET_KEY
+            }).json()
             # process the data in form.cleaned_data as required
             new_survey: SurveyAnswer = form.save()
+            if captcha_result['success']:
+                new_survey.captcha_score = captcha_result['score']
             new_survey = new_survey.classify_infection()
             new_survey.save()
 
