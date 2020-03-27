@@ -2,6 +2,9 @@ html {
   scroll-behavior: smooth;
 }
 
+.bangla {
+  font-family: 'Hind Siliguri', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 /*img.profile-photo {*/
 /*    width: 150px;*/

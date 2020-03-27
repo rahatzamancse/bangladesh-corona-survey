@@ -23,16 +23,7 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        points = [];
-        $.getJSON("{% url 'data_json' %}", function (json) {
-            $.each(json, function (k, v) {
-                if(v.infected === 'SV') {
-                    points.push([v.lat, v.lon, 0.9]);
-                }
-                else if(v.infected === 'MD') {
-                    points.push([v.lat, v.lon, 0.5]);
-                }
-            });
+        $.getJSON("{% url 'data_json' %}", function (points) {
             var heat = L.heatLayer(
                 points, {
                     radius: 20,

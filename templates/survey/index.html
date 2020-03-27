@@ -31,79 +31,124 @@
 {% endblock extrajs %}
 
 {% block content %}
-    <section class="container mt-md-5 pt-md-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1>আপনার কেমন লাগছে বলুন!</h1>
-                <p>আপনার উত্তরগুলি বেনামে সংগ্রহ করা হয়েছে, এবং স্বাস্থ্যসেবা সরবরাহকারীদের COVID-19 এর প্রসারণের गेজ করতে সহায়তা করার জন্য একত্রিত করা হবে নীচের প্রশ্নপত্রটি COVID-19 সংক্রমণের জন্য আপনার ঝুঁকির কারণগুলি নির্ধারণে সহায়তা করার জন্য ডিজাইন করা হয়েছে। সম্পূর্ণ প্রশ্নাবলী স্বাস্থ্যসেবা সিস্টেমগুলি অবহিত করতে ব্যবহৃত হবে। নিজেকে, আপনার পরিবার এবং আপনার সম্প্রদায়কে কীভাবে সুস্থ রাখতে হবে সে সম্পর্কেও এই ওয়েবসাইটটির গাইডেন্স রয়েছে। প্রশ্নগুলি বাংলাদেশি জনস্বাস্থ্য সংস্থাগুলি এবং অন্যান্য স্টেকহোল্ডারদের সর্বোত্তম উপলভ্য নির্দেশিকার উপর ভিত্তি করে এবং নিয়মিত আপডেট করা হবে। অনলাইনে এই সমীক্ষা চালিয়ে আপনি COVID রোগ নির্ণয় করতে পারবেন না। যদি আপনি মারাত্মক লক্ষণগুলি অনুভব করছেন তবে চিকিত্সার সহায়তা নিন।</p>
-            </div>
-            <div class="col-md-2 align-self-center text-center">
-                <img src="{% static 'home_logo.png' %}" alt="Logo Image" style="width: 100px; height: 100px;">
-            </div>
-        </div>
-        <div class="row mt-5 justify-content-center">
-            <div class="col-md-8">
-                <h5>আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন</h5>
-            </div>
+    <section class="container mt-md-5 pt-md-5 bangla">
+    <div class="row justify-content-center">
+    <div class="col-md-8 col-sm-12">
+
+        <div class="text-center">
+            <h1>আপনার কেমন লাগছে বলুন!</h1>
+            <h5>আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন</h5>
         </div>
         <form id="formsubmit" action="" method="post">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {{ form.source.errors }}
             {{ form.source }}
-            <div class="row d-none d-md-flex text-center mt-5 justify-content-center">
-                <div class="col-md-6">
-                    <h2>প্রশ্ন</h2>
+            <hr>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 align-self-center text-center">
+                    {{ form.fever.label }}
                 </div>
-                <div class="col-md-1">
-                    <h2>হ্যাঁ</h2>
+                <div class="col-6 text-right col-md-2 text-md-center">
+                    <label class="lead">হ্যা</label>
+                    {{ form.fever.0.tag }}
                 </div>
-                <div class="col-md-1">
-                    <h2>না</h2>
+                <div class="col-6 text-left col-md-2 text-md-center">
+                    <label class="lead">না</label>
+                    {{ form.fever.1.tag }}
                 </div>
             </div>
             <hr>
-            {% for field in form.visible_fields|slice:":7" %}
-                <div class="row text-center justify-content-center">
-                    <div class="col-12 col-md-6 pb-1">
+
+            <h5 class="text-center">নিম্নলিখিত কোন লক্ষণগুলোর সম্মুখীন হচ্ছেন?</h5>
+            <div class="row justify-content-center ml-5 ml-sm-0">
+                {% for field in form.visible_fields|slice:"1:9" %}
+                    <div class="col-md-4 m-2">
+                        {{ field }}
                         {{ field.label }}
                     </div>
-                    <div class="col-6 text-right col-md-1 text-md-center">
-                        <label class="d-inline d-md-none lead p-2">হ্যা</label>
-                        {{ field.0.tag }}
-                    </div>
-                    <div class="col-6 text-left col-md-1 text-md-center">
-                        <label class="d-inline d-md-none lead p-2">না</label>
-                        {{ field.1.tag }}
-                    </div>
-                </div>
-                <hr>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <hr>
 
-            <div class="row text-center justify-content-center mb-5">
-                <div class="col-12 col-md-8">
-                    <button type="button" id="btnLocation" class="btn btn-primary btn-lg">জিপিএস এর মাধ্যমে আপনার স্থান জানুন।</button><br>
-                    <span id="address">এই বাটন এর মাধ্যমে নিচের তত্থগুলো সয়ংক্রিয়ভাবে পূরণ হয়ে যাবে। </span>
+            <div class="row text-center justify-content-center">
+                <div class="col-md-8">
+                    {{ form.age_group.label }}
+                </div>
+                <div class="col-md-4">
+                    {{ form.age_group }}
+                </div>
+            </div>
+            <hr>
+
+            <h5 class="text-center">নিম্নলিখিত কোন লক্ষণগুলোর সম্মুখীন হচ্ছেন?</h5>
+            <div class="row justify-content-center ml-5 ml-sm-0">
+                {% for field in form.visible_fields|slice:"10:16" %}
+                    <div class="col-md-4 m-2">
+                        {{ field }}
+                        {{ field.label }}
+                    </div>
+                {% endfor %}
+            </div>
+            <hr>
+
+            {% for field in form.visible_fields|slice:"16:19" %}
+            <div class="row justify-content-center">
+                <div class="col-md-8 align-self-center text-center">
+                    {{ field.label }}
+                </div>
+                <div class="col-6 text-right col-md-2 text-md-center">
+                    <label class="lead">হ্যা</label>
+                    {{ field.0.tag }}
+                </div>
+                <div class="col-6 text-left col-md-2 text-md-center">
+                    <label class="lead">না</label>
+                    {{ field.1.tag }}
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+            <div class="row justify-content-center">
+                <div class="col align-self-center text-justify">
+                    <p class="lead text-danger">
+                        আপনি যদি চীন, সিঙ্গাপুর, জাপান, দক্ষিন কোরিয়া, ইতালি, ইরান এসব দেশে ভ্রমণ করে থাকেন এবং ফিরে আসার ১৪ দিনের মধ্যে যদি আপনার জ্বর/কাশি/গলা ব্যথা/শ্বাসকষ্ট দেখা দেয় তাহলে অতি দ্রুত IEDCR এর হটলাইন নাম্বারে (<a href="tel:01937000011">01937000011</a>, <a href="tel:01937110011">01937110011</a>, <a href="tel:01927711784">01927711784</a>, <a href="tel:019771185">019771185</a>) যোগাযোগ করুন এবং কুয়েত-মৈত্রী সরকারি হাসপাতালে ডাক্তারের পরামর্শ নিন।
+                    </p>
+                </div>
+            </div>
+
+            <div class="row text-center justify-content-center mb-3">
+                <div class="col">
+                    <button type="button" id="btnLocation" class="btn btn-primary btn-lg mb-1">সয়ংক্রিয় ভাবে পোস্ট কোড নির্ধারণ করুন</button><br>
+                    <span id="address">এই বাটন এর মাধ্যমে GPS দিয়ে নিচের তত্থগুলো সয়ংক্রিয়ভাবে পূরণ হয়ে যাবে। </span>
                 </div>
             </div>
             <div class="row text-center justify-content-center">
-                <div class="col-12 col-md-6 pb-2">
+                <div class="col align-self-center">
                     {{ form.postcode.label }}
                 </div>
-                <div class="col-12 text-center col-md-2">
+                <div class="col-md-4">
                     {{ form.postcode }}
-                    {{ form.lon.as_hidden }}
-                    {{ form.lat.as_hidden }}
+                    {{ form.lon }}
+                    {{ form.lat }}
                 </div>
             </div>
             <input type="hidden" name="g-recaptcha-response" id='recaptcha'>
-            <div class="row text-center justify-content-center mt-5">
-                <div class="col-12 text-right col-md-6 text-md-center">
-                    <input type="submit" value="SUBMIT" class="btn btn-primary btn-lg">
-                </div>
+            <div class="text-center mt-3 text-center">
+                <input type="submit" value="SUBMIT" class="btn btn-primary btn-lg">
             </div>
             <hr>
         </form>
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-justify">
+                <p>আপনার উত্তরগুলি বেনামে সংগ্রহ করা হয়েছে, এবং স্বাস্থ্যসেবা সরবরাহকারীদের COVID-19 এর প্রসারণের गेজ করতে সহায়তা করার জন্য একত্রিত করা হবে নীচের প্রশ্নপত্রটি COVID-19 সংক্রমণের জন্য আপনার ঝুঁকির কারণগুলি নির্ধারণে সহায়তা করার জন্য ডিজাইন করা হয়েছে। সম্পূর্ণ প্রশ্নাবলী স্বাস্থ্যসেবা সিস্টেমগুলি অবহিত করতে ব্যবহৃত হবে। নিজেকে, আপনার পরিবার এবং আপনার সম্প্রদায়কে কীভাবে সুস্থ রাখতে হবে সে সম্পর্কেও এই ওয়েবসাইটটির গাইডেন্স রয়েছে। প্রশ্নগুলি বাংলাদেশি জনস্বাস্থ্য সংস্থাগুলি এবং অন্যান্য স্টেকহোল্ডারদের সর্বোত্তম উপলভ্য নির্দেশিকার উপর ভিত্তি করে এবং নিয়মিত আপডেট করা হবে। অনলাইনে এই সমীক্ষা চালিয়ে আপনি COVID রোগ নির্ণয় করতে পারবেন না। যদি আপনি মারাত্মক লক্ষণগুলি অনুভব করছেন তবে চিকিত্সার সহায়তা নিন।</p>
+            </div>
+            <div class="col-md-4 text-center align-self-center">
+                <img src="{% static 'home_logo.png' %}" alt="Logo Image" style="width: 100px; height: 100px;">
+            </div>
+        </div>
+    </div>
+    </div>
     </section>
 
 {% endblock content %}

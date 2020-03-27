@@ -24,9 +24,10 @@ def index(request):
             }).json()
             # process the data in form.cleaned_data as required
             new_survey: SurveyAnswer = form.save()
+            print(new_survey)
             if captcha_result['success']:
                 new_survey.captcha_score = captcha_result['score']
-            new_survey = new_survey.classify_infection()
+            new_survey = new_survey.calculate_infection_score()
             new_survey.save()
 
             # redirect to a new URL:
@@ -43,10 +44,19 @@ def index(request):
 
 
 def surveydata(request):
-    data = serializers.serialize('python', SurveyAnswer.objects.all(), fields=('lat', 'lon', 'infected'))
+    data = serializers.serialize('python', SurveyAnswer.objects.all(), fields=('lat', 'lon', 'infection_score'))
     data = [d['fields'] for d in data]
     for i, d in enumerate(data):
         data[i]['lat'] = float(data[i]['lat'])
         data[i]['lon'] = float(data[i]['lon'])
-    # data = json.dumps(data)
-    return JsonResponse(data, safe=False)
+
+    new_min = 0.5
+    new_max = 1.0
+    new_spread = new_max - new_min
+    minx = min([i['infection_score'] for i in data])
+    maxx = max([i['infection_score'] for i in data])
+    spread = maxx - minx
+    if spread == 0:
+        spread = maxx
+    new_data = [[i['lat'], i['lon'], (i['infection_score']-minx)/spread*new_spread + new_min] for i in data]
+    return JsonResponse(new_data, safe=False)

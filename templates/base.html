@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="" type="image/x-icon"> <!-- TODO: Update icon -->
@@ -10,7 +10,10 @@
     <meta name="theme-color" content="#000000">
     <meta name="description" content="Your platform for up-to-date information about COVID-19 in your community and in Bangladesh">
 
-    <title>{% block title %}Bangla COVID-19 survey{% endblock title %}</title>
+    <title>{% block title %}Bangladesh COVID-19 survey{% endblock title %}</title>
+
+    <!-- Bengali font -->
+    <link href="https://fonts.googleapis.com/css?family=Hind+Siliguri&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
@@ -19,6 +22,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- Custom Style -->
+    <style>
+
+    </style>
     <link rel="stylesheet" href="{% static 'custom.css' %}">
     {% block extracss %}{% endblock extracss %}
 
@@ -62,9 +68,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Track Your Symptoms</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">The Team</a>
-            </li>
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="#">The Team</a>#}
+{#            </li>#}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'heatmap' %}">Heat Map</a>
             </li>
@@ -82,9 +88,14 @@
 {% block content %}
 {% endblock content %}
 <hr>
+{#<footer>#}
+{#    <div style="text-align: center;">#}
+{#        © 2020 | Md. Rahat-uz-Zaman | Credits. Bishnu Sarker Bandhan#}
+{#    </div>#}
+{#</footer>#}
 <footer>
     <div style="text-align: center;">
-        © 2020 | Md. Rahat-uz-Zaman | Credits. Bishnu Sarker Bandhan
+        2020 | জনস্বার্থে করোনা প্রতিরোধে |
     </div>
 </footer>
 
