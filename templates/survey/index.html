@@ -36,10 +36,11 @@
     <div class="col-md-8 col-sm-12">
 
         <div class="text-center">
-            <h1>আপনার কেমন লাগছে বলুন!</h1>
-            <h5>আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন</h5>
+            <h1>আপনি কি করোনা ঝুঁকিতে আছেন?</h1>
+            <p><b>COVID-19</b> সম্পর্কিত কোনো <span class="text-danger">জরুরী</span> সংবাদ প্রেরণের জন্য সরকারের হটলাইনে (<a href="tel:01937000011">01937000011</a>, <a href="tel:01937110011">01937110011</a>, <a href="tel:01927711784">01927711784</a>, <a href="tel:019771185">019771185</a>) এখনই যোগাযোগ করুন।</p>
+            <h5> নিচের প্রশ্নগুলোর উত্তর দিয়ে আমাদের সহায়তা করুন<br>(আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন)</h5>
         </div>
-        <form id="formsubmit" action="" method="post">
+        <form id="formsubmit" action="" method="post" class="lead">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {{ form.source.errors }}
@@ -109,7 +110,7 @@
             </div>
             <hr>
             {% endfor %}
-            <div class="row justify-content-center">
+            <div class="row justify-content-center warning-msg">
                 <div class="col align-self-center text-justify">
                     <p class="lead text-danger">
                         আপনি যদি চীন, সিঙ্গাপুর, জাপান, দক্ষিন কোরিয়া, ইতালি, ইরান এসব দেশে ভ্রমণ করে থাকেন এবং ফিরে আসার ১৪ দিনের মধ্যে যদি আপনার জ্বর/কাশি/গলা ব্যথা/শ্বাসকষ্ট দেখা দেয় তাহলে অতি দ্রুত IEDCR এর হটলাইন নাম্বারে (<a href="tel:01937000011">01937000011</a>, <a href="tel:01937110011">01937110011</a>, <a href="tel:01927711784">01927711784</a>, <a href="tel:019771185">019771185</a>) যোগাযোগ করুন এবং কুয়েত-মৈত্রী সরকারি হাসপাতালে ডাক্তারের পরামর্শ নিন।
@@ -119,8 +120,6 @@
 
             <div class="row text-center justify-content-center mb-3">
                 <div class="col">
-                    <button type="button" id="btnLocation" class="btn btn-primary btn-lg mb-1">সয়ংক্রিয় ভাবে পোস্ট কোড নির্ধারণ করুন</button><br>
-                    <span id="address">এই বাটন এর মাধ্যমে GPS দিয়ে নিচের তত্থগুলো সয়ংক্রিয়ভাবে পূরণ হয়ে যাবে। </span>
                 </div>
             </div>
             <div class="row text-center justify-content-center">
@@ -128,11 +127,14 @@
                     {{ form.postcode.label }}
                 </div>
                 <div class="col-md-4">
+                    <button type="button" id="btnLocation" class="btn btn-primary mb-1">auto পোস্ট কোড নির্ধারণ করুন</button>
                     {{ form.postcode }}
+                    <span id="address" class="small">এই বাটন এর মাধ্যমে GPS দিয়ে নিচের তত্থগুলো সয়ংক্রিয়ভাবে পূরণ হয়ে যাবে।</span>
                     {{ form.lon }}
                     {{ form.lat }}
                 </div>
             </div>
+
             <input type="hidden" name="g-recaptcha-response" id='recaptcha'>
             <div class="text-center mt-3 text-center">
                 <input type="submit" value="SUBMIT" class="btn btn-primary btn-lg">
@@ -141,7 +143,7 @@
         </form>
         <div class="row justify-content-center">
             <div class="col-md-8 text-justify">
-                <p>আপনার উত্তরগুলি বেনামে সংগ্রহ করা হয়েছে, এবং স্বাস্থ্যসেবা সরবরাহকারীদের COVID-19 এর প্রসারণের गेজ করতে সহায়তা করার জন্য একত্রিত করা হবে নীচের প্রশ্নপত্রটি COVID-19 সংক্রমণের জন্য আপনার ঝুঁকির কারণগুলি নির্ধারণে সহায়তা করার জন্য ডিজাইন করা হয়েছে। সম্পূর্ণ প্রশ্নাবলী স্বাস্থ্যসেবা সিস্টেমগুলি অবহিত করতে ব্যবহৃত হবে। নিজেকে, আপনার পরিবার এবং আপনার সম্প্রদায়কে কীভাবে সুস্থ রাখতে হবে সে সম্পর্কেও এই ওয়েবসাইটটির গাইডেন্স রয়েছে। প্রশ্নগুলি বাংলাদেশি জনস্বাস্থ্য সংস্থাগুলি এবং অন্যান্য স্টেকহোল্ডারদের সর্বোত্তম উপলভ্য নির্দেশিকার উপর ভিত্তি করে এবং নিয়মিত আপডেট করা হবে। অনলাইনে এই সমীক্ষা চালিয়ে আপনি COVID রোগ নির্ণয় করতে পারবেন না। যদি আপনি মারাত্মক লক্ষণগুলি অনুভব করছেন তবে চিকিত্সার সহায়তা নিন।</p>
+                <p>আপনার উত্তরগুলি  বেনামে সংগ্রহ করা হয়েছে। সার্ভেটি COVID-19 সংক্রমণের জন্য আপনার ও আপনার  অঞ্চলের ঝুঁকি নির্ধারণে সহায়তা করবে। প্রশ্নগুলো বাংলাদেশ জনস্বাস্থ্য সংস্থা এবং WHO প্রকাশিত নির্দেশিকার উপর ভিত্তি করে তৈরি করা হয়েছে। এই সমীক্ষা COVID-19  রোগ নির্ণয় করতে পারে না। এই সমীক্ষা শুধুমাত্র রোগের ঝুঁকি নির্ণয়ে সহায়ক। যেকোন ঝুঁকিপূর্ণ পরিস্থিতিতে চিকিৎসকের পরামর্শ নিন। সরকারের হট লাইনে যোগাযোগ করুন।</p>
             </div>
             <div class="col-md-4 text-center align-self-center">
                 <img src="{% static 'home_logo.png' %}" alt="Logo Image" style="width: 100px; height: 100px;">

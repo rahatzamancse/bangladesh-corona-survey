@@ -69,7 +69,7 @@ class SurveyAnswer(models.Model):
 
     # Automated
     captcha_score = models.DecimalField(max_digits=3, decimal_places=2, default=0)
-    submission_time = models.TimeField(auto_now=True)
+    submission_time = models.DateTimeField(auto_now=True)
     infection_score = models.IntegerField(null=True)
 
     # infected = models.CharField(
