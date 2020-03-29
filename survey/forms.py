@@ -58,7 +58,7 @@ class SurveyForm(forms.ModelForm):
             'breathless': 'শ্বাস কষ্ট',
             'fatigue': 'দূর্বল/ অবসাদগ্রস্ত',
 
-            'age_group': 'আপনার বয়স কোন বিভাগ এ পরে?',
+            'age_group': 'আপনার বয়স কোন গ্রুপে?',
 
             'diabetes': 'ডায়াবেটিস/বহুমূত্র',
             'heart': 'হৃদরোগ',

@@ -22,23 +22,62 @@ def index(request):
                 'response': request.POST.get('g-recaptcha-response'),
                 'secret': settings.RECAPTCHA_SECRET_KEY
             }).json()
-            # process the data in form.cleaned_data as required
-            new_survey: SurveyAnswer = form.save()
-            print(new_survey)
             if captcha_result['success']:
-                new_survey.captcha_score = captcha_result['score']
-            new_survey = new_survey.calculate_infection_score()
-            new_survey.save()
+                captcha_score = captcha_result['score']
+            else:
+                captcha_score = 0
+            answer: SurveyAnswer = form.save(commit=False)
+            answer.captcha_score = captcha_score
+            answer = answer.calculate_infection_score()
+
+            if request.COOKIES.get('last_answer'):
+                id = int(request.COOKIES.get('last_answer'))
+                SurveyAnswer.objects.filter(id=id).update(
+                    fever=answer.fever,
+                    cough=answer.cough,
+                    diarrhea=answer.diarrhea,
+                    sore_throat=answer.sore_throat,
+                    body_ache=answer.body_ache,
+                    headache=answer.headache,
+                    breathless=answer.breathless,
+                    fatigue=answer.fatigue,
+                    age_group=answer.age_group,
+                    diabetes=answer.diabetes,
+                    heart=answer.heart,
+                    lever=answer.lever,
+                    smoking=answer.smoking,
+                    cancer_therapy=answer.cancer_therapy,
+                    steroid=answer.steroid,
+                    travel_14_days=answer.travel_14_days,
+                    travel_infected_3_month=answer.travel_infected_3_month,
+                    close_contact=answer.close_contact,
+                    postcode=answer.postcode,
+                    lat=answer.lat,
+                    lon=answer.lon,
+                    captcha_score=captcha_score,
+                    infection_score=answer.infection_score
+                )
+            else:
+                answer.save()
+                id = answer.id
+
+            html = HttpResponseRedirect('/heatmap')
+            html.set_cookie('last_answer', id, max_age=999999999)
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/heatmap')
+            return html
         else:
             # TODO: Show error message
             return HttpResponseRedirect('')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = SurveyForm()
+        if request.COOKIES.get('last_answer'):
+            id = int(request.COOKIES.get('last_answer'))
+            answer = SurveyAnswer.objects.get(id=id)
+            form = SurveyForm(instance=answer)
+        else:
+            form = SurveyForm()
 
     return render(request, 'survey/index.html', context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
 

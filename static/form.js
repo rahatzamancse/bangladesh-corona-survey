@@ -36,6 +36,26 @@ var post_code_correct = false;
 
 
 $.getJSON(postcodejson, function (json) {
+    var val = postcodefield.val();
+    var postposition = getlocationfrompost(json, val);
+    if(postposition) {
+        post_code_correct = true;
+        if(!gps_accessed) {
+            filllatlon(postposition.lat, postposition.lon);
+        }
+        $('#address').html(postposition.s + ', ' + postposition.t + ', ' + postposition.dis + ', ' + postposition.div + 'বিভাগ, ' + postposition.p);
+    }
+    else {
+        post_code_correct = false;
+        $('#address').html('পোস্ট কোডটি সঠিক নয়। ');
+    }
+
+    showhelpdiv();
+
+    $('input[name="travel_14_days"]').change(showhelpdiv);
+    $('input[name="travel_infected_3_month"]').change(showhelpdiv);
+    $('input[name="close_contact"]').change(showhelpdiv);
+
     btnLocation.click(function () {
         btnLocation
             .prop('disabled', true)
@@ -104,7 +124,21 @@ $.getJSON(postcodejson, function (json) {
         // var pos = {lat: 23.7, lon: 90.95};
         btnLocation.html('দুঃখিত, স্থান জানা যাচ্ছে না।');
     }
+
 });
+
+function showhelpdiv() {
+    if(
+        $('#id_travel_14_days_0').is(':checked') ||
+        $('#id_travel_infected_3_month_0').is(':checked') ||
+        $('#id_close_contact_0').is(':checked')
+    ) {
+        $('.warning-msg').show();
+    }
+    else {
+        $('.warning-msg').hide();
+    }
+}
 
 grecaptcha.ready(function() {
     $('#formsubmit').submit(function (e) {
@@ -120,5 +154,6 @@ grecaptcha.ready(function() {
             $('#address').html('<b style="color: red">পোস্ট কোডটি সঠিক নয়।</b>');
         }
     });
+
 });
 
