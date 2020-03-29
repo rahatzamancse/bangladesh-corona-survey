@@ -63,13 +63,20 @@
             <hr>
 
             <h5 class="text-center">নিম্নলিখিত কোন লক্ষণগুলোর সম্মুখীন হচ্ছেন?</h5>
-            <div class="row justify-content-center ml-5 ml-sm-0">
+            <div class="row justify-content-center ml-5 ml-sm-0" id="div_symptoms">
                 {% for field in form.visible_fields|slice:"1:9" %}
                     <div class="col-md-4 m-2">
                         {{ field }}
                         {{ field.label }}
                     </div>
                 {% endfor %}
+            </div>
+            <div class="row justify-content-center">
+                <div class="m-2">
+                    <label>
+                        <input type="checkbox" onchange="uncheckAll('#div_symptoms')">কোনোটিই নয়
+                    </label>
+                </div>
             </div>
             <hr>
 
@@ -83,14 +90,21 @@
             </div>
             <hr>
 
-            <h5 class="text-center">নিম্নলিখিত কোন লক্ষণগুলোর সম্মুখীন হচ্ছেন?</h5>
-            <div class="row justify-content-center ml-5 ml-sm-0">
+            <h5 class="text-center">নিম্নলিখিত কোনগুলো আপনার জন্য প্রযোজ্য?</h5>
+            <div class="row justify-content-center ml-5 ml-sm-0" id="div_history">
                 {% for field in form.visible_fields|slice:"10:16" %}
                     <div class="col-md-4 m-2">
                         {{ field }}
                         {{ field.label }}
                     </div>
                 {% endfor %}
+            </div>
+            <div class="row justify-content-center">
+                <div class="m-2">
+                    <label>
+                        <input type="checkbox" onchange="uncheckAll('#div_history')">কোনোটিই নয়
+                    </label>
+                </div>
             </div>
             <hr>
 
@@ -110,13 +124,13 @@
             </div>
             <hr>
             {% endfor %}
-            <div class="row justify-content-center warning-msg">
-                <div class="col align-self-center text-justify">
-                    <p class="lead text-danger">
-                        আপনি যদি চীন, সিঙ্গাপুর, জাপান, দক্ষিন কোরিয়া, ইতালি, ইরান এসব দেশে ভ্রমণ করে থাকেন এবং ফিরে আসার ১৪ দিনের মধ্যে যদি আপনার জ্বর/কাশি/গলা ব্যথা/শ্বাসকষ্ট দেখা দেয় তাহলে অতি দ্রুত IEDCR এর হটলাইন নাম্বারে (<a href="tel:01937000011">01937000011</a>, <a href="tel:01937110011">01937110011</a>, <a href="tel:01927711784">01927711784</a>, <a href="tel:019771185">019771185</a>) যোগাযোগ করুন এবং কুয়েত-মৈত্রী সরকারি হাসপাতালে ডাক্তারের পরামর্শ নিন।
-                    </p>
-                </div>
-            </div>
+{#            <div class="row justify-content-center warning-msg">#}
+{#                <div class="col align-self-center text-justify">#}
+{#                    <p class="lead text-danger">#}
+{#                        আপনি যদি চীন, সিঙ্গাপুর, জাপান, দক্ষিন কোরিয়া, ইতালি, ইরান এসব দেশে ভ্রমণ করে থাকেন এবং ফিরে আসার ১৪ দিনের মধ্যে যদি আপনার জ্বর/কাশি/গলা ব্যথা/শ্বাসকষ্ট দেখা দেয় তাহলে অতি দ্রুত IEDCR এর হটলাইন নাম্বারে (<a href="tel:01937000011">01937000011</a>, <a href="tel:01937110011">01937110011</a>, <a href="tel:01927711784">01927711784</a>, <a href="tel:019771185">019771185</a>) যোগাযোগ করুন এবং কুয়েত-মৈত্রী সরকারি হাসপাতালে ডাক্তারের পরামর্শ নিন।#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
 
             <div class="row text-center justify-content-center mb-3">
                 <div class="col">

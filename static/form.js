@@ -50,18 +50,15 @@ $.getJSON(postcodejson, function (json) {
         $('#address').html('পোস্ট কোডটি সঠিক নয়। ');
     }
 
-    showhelpdiv();
-
-    $('input[name="travel_14_days"]').change(showhelpdiv);
-    $('input[name="travel_infected_3_month"]').change(showhelpdiv);
-    $('input[name="close_contact"]').change(showhelpdiv);
+    // showhelpdiv();
+    // $('input[name="travel_14_days"]').change(showhelpdiv);
+    // $('input[name="travel_infected_3_month"]').change(showhelpdiv);
+    // $('input[name="close_contact"]').change(showhelpdiv);
 
     if(cookied) {
-        console.log(cookied);
         $('.cookied').show();
     }
     else {
-        console.log(!cookied);
         $('.cookied').hide();
     }
 
@@ -136,17 +133,21 @@ $.getJSON(postcodejson, function (json) {
 
 });
 
-function showhelpdiv() {
-    if(
-        $('#id_travel_14_days_0').is(':checked') ||
-        $('#id_travel_infected_3_month_0').is(':checked') ||
-        $('#id_close_contact_0').is(':checked')
-    ) {
-        $('.warning-msg').show();
-    }
-    else {
-        $('.warning-msg').hide();
-    }
+// function showhelpdiv() {
+//     if(
+//         $('#id_travel_14_days_0').is(':checked') ||
+//         $('#id_travel_infected_3_month_0').is(':checked') ||
+//         $('#id_close_contact_0').is(':checked')
+//     ) {
+//         $('.warning-msg').show();
+//     }
+//     else {
+//         $('.warning-msg').hide();
+//     }
+// }
+
+function uncheckAll(div){
+    $(div + ' input[type="checkbox"]:checked').prop('checked',false);
 }
 
 grecaptcha.ready(function() {

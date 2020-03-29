@@ -61,14 +61,13 @@ def index(request):
                 answer.save()
                 id = answer.id
 
-            html = HttpResponseRedirect('/heatmap')
+            html = render(request, 'survey/submitted.html', context={'success': True})
             html.set_cookie('last_answer', id, max_age=999999999)
 
-            # redirect to a new URL:
             return html
         else:
-            # TODO: Show error message
-            return HttpResponseRedirect('')
+            html = render(request, 'survey/submitted.html', context={'success': False})
+            return html
 
     # if a GET (or any other method) we'll create a blank form
     else:
