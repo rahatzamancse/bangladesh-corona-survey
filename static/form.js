@@ -56,6 +56,15 @@ $.getJSON(postcodejson, function (json) {
     $('input[name="travel_infected_3_month"]').change(showhelpdiv);
     $('input[name="close_contact"]').change(showhelpdiv);
 
+    if(cookied) {
+        console.log(cookied);
+        $('.cookied').show();
+    }
+    else {
+        console.log(!cookied);
+        $('.cookied').hide();
+    }
+
     btnLocation.click(function () {
         btnLocation
             .prop('disabled', true)

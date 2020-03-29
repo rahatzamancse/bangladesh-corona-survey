@@ -76,10 +76,12 @@ def index(request):
             id = int(request.COOKIES.get('last_answer'))
             answer = SurveyAnswer.objects.get(id=id)
             form = SurveyForm(instance=answer)
+            cookied = 'true'
         else:
             form = SurveyForm()
+            cookied = 'false'
 
-    return render(request, 'survey/index.html', context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
+    return render(request, 'survey/index.html', context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY, 'cookied': cookied})
 
 
 def surveydata(request):

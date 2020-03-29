@@ -22,7 +22,8 @@
     <script src="{% static 'dist.js' %}"></script>
     <script>
         const postcodejson = '{% static 'postcodes.json' %}';
-        const site_key = '{{ site_key }}'
+        const site_key = '{{ site_key }}';
+        const cookied = {{ cookied }};
     </script>
     <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
     <script src="{% static 'form.js' %}"></script>
@@ -37,6 +38,7 @@
             <h1>আপনি কি করোনা ঝুঁকিতে আছেন?</h1>
             <p><b>COVID-19</b> সম্পর্কিত কোনো <span class="text-danger">জরুরী</span> সংবাদ প্রেরণের জন্য সরকারের হটলাইনে (<a href="tel:01937000011">01937000011</a>, <a href="tel:01937110011">01937110011</a>, <a href="tel:01927711784">01927711784</a>, <a href="tel:019771185">019771185</a>) এখনই যোগাযোগ করুন।</p>
             <h5> নিচের প্রশ্নগুলোর উত্তর দিয়ে আমাদের সহায়তা করুন<br>(আপনি কোনও লক্ষণ অনুভব না করে থাকলেও এই ফর্মটি পূরণ করুন)</h5>
+            <p class="text-success cookied"> আপনার পূর্বের উত্তরগুলো সংগ্রহ করে রাখা হয়েছে। নিম্নে উত্তরগুলো আপনি পুরোরাই কারেকশন করতে পারবেন।</p>
         </div>
         <form id="formsubmit" action="" method="post" class="lead">
             {% csrf_token %}
