@@ -55,12 +55,9 @@ $.getJSON(postcodejson, function (json) {
     // $('input[name="travel_infected_3_month"]').change(showhelpdiv);
     // $('input[name="close_contact"]').change(showhelpdiv);
 
-    if(cookied) {
-        $('.cookied').show();
-    }
-    else {
-        $('.cookied').hide();
-    }
+    // if(cookied === 'true') {
+    //     $('#previousData').modal('show');
+    // }
 
     btnLocation.click(function () {
         btnLocation

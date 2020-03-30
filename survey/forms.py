@@ -14,7 +14,7 @@ class SurveyForm(forms.ModelForm):
         # fields = '__all__'
 
         # These fields will be calculated after submission by the user
-        exclude = ['submission_time', 'captcha_score', 'infection_score']
+        exclude = ['submission_time', 'captcha_score', 'infection_score', 'browser_id']
 
         widgets = {
             'fever': forms.RadioSelect,
