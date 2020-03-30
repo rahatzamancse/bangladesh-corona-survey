@@ -19,89 +19,92 @@ def classify(survey: SurveyAnswer) -> bool:
 
 def index(request):
     if request.method == 'POST':
-        if 'previous_token' in request.POST:
-            id = int(request.POST.get('previous_token'))
-            if SurveyAnswer.objects.filter(id=id).exists():
-                form = SurveyForm(instance=SurveyAnswer.objects.get(id=id))
+        # if 'previous_token' in request.POST:
+        #     id = int(request.POST.get('previous_token'))
+        #     if SurveyAnswer.objects.filter(id=id).exists():
+        #         form = SurveyForm(instance=SurveyAnswer.objects.get(id=id))
+        #     else:
+        #         form = SurveyForm()
+        #         id = 'invalid'
+        #     return render(request, 'survey/index.html',
+        #                   context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY, 'id': id})
+        # else:
+
+        # Else start
+        # create a form instance and populate it with data from the request:
+        form = SurveyForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            answer: SurveyAnswer = form.save(commit=False)
+            answer = answer.calculate_infection_score()
+
+            # RECAPTCHA v3 validation
+            captcha_result = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
+                'response': request.POST.get('g-recaptcha-response'),
+                'secret': settings.RECAPTCHA_SECRET_KEY
+            }).json()
+            if captcha_result['success']:
+                captcha_score = captcha_result['score']
             else:
-                form = SurveyForm()
-                id = 'invalid'
-            return render(request, 'survey/index.html',
-                          context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY, 'id': id})
+                captcha_score = 0
+            answer.captcha_score = captcha_score
+
+            # Browser id
+            if 'browser_id' in request.COOKIES:
+                browser_id = int(request.COOKIES.get('browser_id'))
+                answer.browser_id = browser_id
+            else:
+                browser_id = SurveyAnswer.objects.aggregate(Max('browser_id'))['browser_id__max']
+                if not browser_id:
+                    browser_id = 1
+                else:
+                    browser_id += 1
+                answer.browser_id = browser_id
+
+
+            # If updating previous data
+            if request.POST.get('id'):
+                id = int(request.POST.get('id'))
+                SurveyAnswer.objects.filter(id=id).update(
+                    fever=answer.fever,
+                    cough=answer.cough,
+                    diarrhea=answer.diarrhea,
+                    sore_throat=answer.sore_throat,
+                    body_ache=answer.body_ache,
+                    headache=answer.headache,
+                    breathless=answer.breathless,
+                    fatigue=answer.fatigue,
+                    age_group=answer.age_group,
+                    diabetes=answer.diabetes,
+                    heart=answer.heart,
+                    lever=answer.lever,
+                    smoking=answer.smoking,
+                    cancer_therapy=answer.cancer_therapy,
+                    steroid=answer.steroid,
+                    travel_14_days=answer.travel_14_days,
+                    travel_infected_3_month=answer.travel_infected_3_month,
+                    close_contact=answer.close_contact,
+                    postcode=answer.postcode,
+                    lat=answer.lat,
+                    lon=answer.lon,
+                    captcha_score=captcha_score,
+                    infection_score=answer.infection_score,
+                    browser_id=answer.browser_id
+                )
+
+            # Adding new data
+            else:
+                answer.save()
+
+            html = render(request, 'survey/submitted.html', context={'success': True, 'id': answer.id})
+            html.set_cookie('browser_id', browser_id, max_age=999999999)
+            # Else end
+
         else:
-            # create a form instance and populate it with data from the request:
-            form = SurveyForm(request.POST)
-            # check whether it's valid:
-            if form.is_valid():
-                answer: SurveyAnswer = form.save(commit=False)
-                answer = answer.calculate_infection_score()
+            print(form.errors)
+            html = render(request, 'survey/submitted.html', context={'success': False})
 
-                # RECAPTCHA v3 validation
-                captcha_result = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
-                    'response': request.POST.get('g-recaptcha-response'),
-                    'secret': settings.RECAPTCHA_SECRET_KEY
-                }).json()
-                if captcha_result['success']:
-                    captcha_score = captcha_result['score']
-                else:
-                    captcha_score = 0
-                answer.captcha_score = captcha_score
-
-                # Browser id
-                if 'browser_id' in request.COOKIES:
-                    browser_id = int(request.COOKIES.get('browser_id'))
-                    answer.browser_id = browser_id
-                else:
-                    browser_id = SurveyAnswer.objects.aggregate(Max('browser_id'))['browser_id__max']
-                    if not browser_id:
-                        browser_id = 1
-                    else:
-                        browser_id += 1
-                    answer.browser_id = browser_id
-
-
-                # If updating previous data
-                if request.POST.get('id'):
-                    id = int(request.POST.get('id'))
-                    SurveyAnswer.objects.filter(id=id).update(
-                        fever=answer.fever,
-                        cough=answer.cough,
-                        diarrhea=answer.diarrhea,
-                        sore_throat=answer.sore_throat,
-                        body_ache=answer.body_ache,
-                        headache=answer.headache,
-                        breathless=answer.breathless,
-                        fatigue=answer.fatigue,
-                        age_group=answer.age_group,
-                        diabetes=answer.diabetes,
-                        heart=answer.heart,
-                        lever=answer.lever,
-                        smoking=answer.smoking,
-                        cancer_therapy=answer.cancer_therapy,
-                        steroid=answer.steroid,
-                        travel_14_days=answer.travel_14_days,
-                        travel_infected_3_month=answer.travel_infected_3_month,
-                        close_contact=answer.close_contact,
-                        postcode=answer.postcode,
-                        lat=answer.lat,
-                        lon=answer.lon,
-                        captcha_score=captcha_score,
-                        infection_score=answer.infection_score,
-                        browser_id=answer.browser_id
-                    )
-
-                # Adding new data
-                else:
-                    answer.save()
-
-                html = render(request, 'survey/submitted.html', context={'success': True, 'id': answer.id})
-                html.set_cookie('browser_id', browser_id, max_age=999999999)
-
-            else:
-                print(form.errors)
-                html = render(request, 'survey/submitted.html', context={'success': False})
-
-            return html
+        return html
 
     else:
         form = SurveyForm()
