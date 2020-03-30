@@ -20,6 +20,7 @@ from survey import views as survey_views
 
 urlpatterns = [
     path('', survey_views.index, name='survey'),
+    path('info', survey_views.info, name='info'),
     path('data/json', survey_views.surveydata, name='data_json'),
     path('survey/', include('survey.urls')),
     path('heatmap/', include('heatmap.urls')),

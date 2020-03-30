@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+COVID-19 information
+{% endblock title %}
+
+{% block extrajs %}
+{% endblock extrajs %}
+
+{% block content %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>
+                This page is still work in progress.
+            </h1>
+            {{ plot|safe }}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

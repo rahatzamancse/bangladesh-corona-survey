@@ -1,7 +1,10 @@
 import requests
 from django.core import serializers
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+import plotly.express as px
+from plotly.offline import plot
+
 from bangla_corona import settings
 from survey.forms import SurveyForm
 from survey.models import SurveyAnswer
@@ -80,7 +83,35 @@ def index(request):
             form = SurveyForm()
             cookied = 'false'
 
-    return render(request, 'survey/index.html', context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY, 'cookied': cookied})
+    return render(request, 'survey/index.html',
+                  context={'form': form, 'site_key': settings.RECAPTCHA_SITE_KEY, 'cookied': cookied})
+
+
+def info(request):
+    url = 'https://pomber.github.io/covid19/timeseries.json'
+    try:
+        data = requests.get(url).json()
+        dates = []
+        deaths = []
+        confirmed = []
+        recovered = []
+        for i in data['Bangladesh']:
+            dates.append(i['date'])
+            deaths.append(i['deaths'])
+            confirmed.append(i['confirmed'])
+            recovered.append(i['recovered'])
+
+        fig = px.line(x=dates, y=confirmed, title='Confirmed cases in Bangladesh each day')
+        plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+
+        context = {
+            'plot': plot_div
+        }
+
+        return render(request, 'info.html', context=context)
+
+    except:
+        return redirect('')
 
 
 def surveydata(request):
@@ -98,5 +129,5 @@ def surveydata(request):
     spread = maxx - minx
     if spread == 0:
         spread = maxx
-    new_data = [[i['lat'], i['lon'], (i['infection_score']-minx)/spread*new_spread + new_min] for i in data]
+    new_data = [[i['lat'], i['lon'], (i['infection_score'] - minx) / spread * new_spread + new_min] for i in data]
     return JsonResponse(new_data, safe=False)
