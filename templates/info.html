@@ -1,23 +1,100 @@
 {% extends 'base.html' %}
 
 {% block title %}
-COVID-19 information
+    COVID-19 information
 {% endblock title %}
 
 {% block extrajs %}
 {% endblock extrajs %}
 
 {% block content %}
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>
-                This page is still work in progress.
-            </h1>
-            {{ plot|safe }}
-
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <section class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 text-right">
+                <span class="text-small text-muted">Last updated on {{ last_updated }} 12:00AM</span>
+            </div>
         </div>
-    </div>
-</div>
+        <div class="row justify-content-center">
+            <div class="col-6 text-center">
+                <h2><u>
+                    বিশ্ব
+                </u></h2>
+                <br>
+                <h4>
+                    মোট কেস সংখ্যা:
+                </h4>
+                <h1 class="text-muted">
+                    {{ world_total_cases }}
+                </h1>
+                <br>
+                <h4 class="text-danger">
+                    মোট মৃত:
+                </h4>
+                <h1>
+                    {{ world_deaths }}
+                </h1>
+                <br>
+                <h4 class="text-success">
+                    মোট সুস্থ হয়েছেন:
+                </h4>
+                <h1>
+                    {{ world_recovered }}
+                </h1>
+                <br>
+                <h4 class="text-success">
+                    একটিভ কেস:
+                </h4>
+                <h1>
+                    {{ world_active }}
+                </h1>
+                <br>
+            </div>
+            <div class="col-6 text-center">
+                <h2><u>
+                    বাংলাদেশ
+                </u></h2>
+                <br>
+                <h4>
+                    মোট কেস সংখ্যা:
+                </h4>
+                <h1 class="text-muted">
+                    {{ bd_total_cases }}
+                </h1>
+                <br>
+                <h4 class="text-danger">
+                    মোট মৃত:
+                </h4>
+                <h1>
+                    {{ bd_deaths }}
+                </h1>
+                <br>
+                <h4 class="text-success">
+                    মোট সুস্থ হয়েছেন:
+                </h4>
+                <h1>
+                    {{ bd_recovered }}
+                </h1>
+                <br>
+                <h4 class="text-success">
+                    একটিভ কেস:
+                </h4>
+                <h1>
+                    {{ bd_active }}
+                </h1>
+                <br>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <section class="container-fluid mt-5">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    আপনাদের আরো তথ্য দেয়ার জন্য নিচের অংশে ওয়েবসাইট এর কাজ চলছে
+                </h1>
+                {{ plot|safe }}
+            </div>
+        </div>
+    </section>
 {% endblock content %}

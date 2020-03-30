@@ -13,7 +13,7 @@
     <title>{% block title %}Bangladesh COVID-19 survey{% endblock title %}</title>
 
     <!-- Bengali font -->
-    <link href="https://fonts.googleapis.com/css?family=Hind+Siliguri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'bangla-font/stylesheet.css' %}"/>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
@@ -40,7 +40,7 @@
 <button onclick="topFunction()" id="btnToTop" title="Go to top">Top</button>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top shadow py-3" style="background-color: white;">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top shadow" style="background-color: white;">
     <a class="navbar-brand" href="{% url 'survey' %}">
         SURVEY
     </a>
@@ -60,10 +60,10 @@
 {#                </div>#}
 {#            </li>#}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Home</a>
+                <a class="nav-link" href="{% url 'index' %}" style="font-size: xx-large">সার্ভে</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'info' %}">Info</a>
+                <a class="nav-link" href="{% url 'info' %}" style="font-size: xx-large">ইনফরমেশন</a>
             </li>
 {#            <li class="nav-item">#}
 {#                <a class="nav-link" href="#">Track Your Symptoms</a>#}
@@ -72,7 +72,7 @@
 {#                <a class="nav-link" href="#">The Team</a>#}
 {#            </li>#}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'heatmap' %}">Heat Map</a>
+                <a class="nav-link" href="{% url 'heatmap' %}" style="font-size: xx-large">ম্যাপ</a>
             </li>
         </ul>
         <!-- Place this tag where you want the search results to render -->
@@ -83,7 +83,7 @@
 {#        </ul>#}
     </div>
 </nav>
-<div style="margin-bottom: 100px"></div>
+<div style="margin-bottom: 120px"></div>
 
 {% block content %}
 {% endblock content %}
